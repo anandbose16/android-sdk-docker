@@ -15,8 +15,15 @@ docker run -it --privileged -v /path/to/project:/project anandbose16/android-sdk
 ```
 Now, build your project.
 ```bash
-./gradlew clean assembleDebug
+gradle clean assembleDebug
 ```
 Done!
+## Included stuffs
+* OpenJDK 1.8.0.252-2.2
+* Android SDK Platform 30, Build-Tools 30.0.2
+* Gradle 6.6.1
+* curl 7.72.0-1.2
+* Python 3.8.5
+ 
 ## Disclaimer
 The Android SDK is a licensed software from Google. By using this container image, you agree to the terms and conditions of Android SDK.
