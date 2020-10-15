@@ -21,7 +21,7 @@ Done!
 ## Included stuffs
 * OpenJDK 1.8.0.252-2.2
 * Android SDK Platform 30, Build-Tools 30.0.2
-* Gradle 6.6.1
+* Gradle 6.7
 * curl 7.72.0-1.2
 * Python 3.8.5
  
