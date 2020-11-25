@@ -1,7 +1,7 @@
 # Setup base image
 FROM "docker.io/opensuse/tumbleweed:latest"
 RUN zypper clean --all && zypper dup --allow-vendor-change --no-confirm
-RUN zypper install --no-confirm java-1_8_0-openjdk-devel curl python3-pycurl unzip git
+RUN zypper install --no-confirm java-1_8_0-openjdk-devel curl python3-pycurl zip unzip git
 RUN update-alternatives --set java /usr/lib64/jvm/jre-1.8.0-openjdk/bin/java
 
 # Setup environment
