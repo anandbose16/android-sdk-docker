@@ -1,15 +1,16 @@
 # Setup base image
-FROM "docker.io/opensuse/tumbleweed:latest"
-RUN zypper clean --all && zypper dup --allow-vendor-change --no-confirm
-RUN zypper install --no-confirm java-1_8_0-openjdk-devel curl python3-pycurl zip unzip git
-RUN update-alternatives --set java "/usr/lib64/jvm/jre-1.8.0-openjdk/bin/java"
+FROM "docker.io/library/fedora:33"
+RUN dnf update --refresh --assumeyes
+RUN dnf install --assumeyes java-1.8.0-openjdk-devel curl python3-pycurl zip unzip git
+RUN alternatives --set java "/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.275.b01-1.fc33.x86_64/jre/bin/java"
+RUN alternatives --set javac "/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.275.b01-1.fc33.x86_64/bin/javac"
 
 # Setup environment
 RUN mkdir -p /android
-ENV JAVA_HOME="/usr/lib64/jvm/jre-1.8.0-openjdk"
+ENV JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
 ENV ANDROID_HOME="/android"
 ENV GRADLE_HOME="${ANDROID_HOME}/gradle-6.7.1"
-ENV PATH="${PATH}:${ANDROID_HOME}/build-tools/30.0.2:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/cmdline-tools/bin:${GRADLE_HOME}/bin"
+ENV PATH="${PATH}:${ANDROID_HOME}/build-tools/30.0.3:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/cmdline-tools/bin:${GRADLE_HOME}/bin"
 
 # Install Android SDK commandline tools and Gradle
 RUN curl 'https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip' -o $ANDROID_HOME/commandlinetools.zip
@@ -18,11 +19,14 @@ RUN curl 'https://downloads.gradle-dn.com/distributions/gradle-6.7.1-all.zip' -o
 RUN unzip -qq "${ANDROID_HOME}/gradle-6.7.1-all.zip" -d $ANDROID_HOME
 
 # Install Android SDK
-RUN yes | sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.2" "platforms;android-30" "platform-tools"
+RUN yes | sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3" "platforms;android-30" "platform-tools"
 
 # Accept licenses
 RUN yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
 
 # Cleanup
-RUN zypper clean --all
+RUN dnf clean all
 RUN rm "${ANDROID_HOME}/commandlinetools.zip" "${ANDROID_HOME}/gradle-6.7.1-all.zip"
+
+# Entrypoint
+ENTRYPOINT ["/bin/bash"]
